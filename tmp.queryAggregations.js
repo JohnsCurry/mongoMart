@@ -53,3 +53,8 @@ db.item.aggregate([
   } },
   { $sort: {_id: 1 } }
   ]);
+
+
+// 1B
+
+db.item.find({}).skip(0).limit(5);

@@ -103,15 +103,43 @@ function ItemDAO(database) {
          *
          */
 
-        var pageItem = this.createDummyItem();
-        var pageItems = [];
-        for (var i=0; i<5; i++) {
-            pageItems.push(pageItem);
-        }
+         var query;
+         var pageItems = [];
+         if (category == "All"){
+            query = {};
+         } else {
+            query = {"category": category };
+         }
+
+        this.db.collection('item').find(query).skip(page * itemsPerPage).limit(itemsPerPage).toArray(function(err, docs){
+            console.log("in toArray callback");
+            for (var i = 0; i < docs.length; i++) {
+                pageItems.push(docs[i]);
+            }
+            console.log("Page items...");
+            console.log(pageItems.length);
+            callback(pageItems);
+        });
+        
+        /*this.db.collection('item').find({ "category": category }).skip( page * itemsPerPage).limit(itemsPerPage).toArray(function(err, docs){
+            console.log("Helloooooo");
+            console.log(docs);
+        });*/
+
+        ///console.log("Cursor length is...");
+        //console.log(cursor.length);
+        //console.log(`${category} and ${page} and ${itemsPerPage} and yeah`);
+        //console.log("these are the page items");
+        //console.log(pageItems);
+
+        //var pageItem = this.createDummyItem();
+        //for (var i=0; i<5; i++) {
+        //    pageItems.push(pageItem);
+       // }
 
         // TODO-lab1B Replace all code above (in this method).
 
-        callback(pageItems);
+       // callback(pageItems);
     }
 
 
