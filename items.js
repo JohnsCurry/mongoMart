@@ -66,14 +66,14 @@ function ItemDAO(database) {
             for (var i = 0; i < results.length; i++){
                 allCategory.num += results[i].num;
                 categories.push(results[i]);
-                console.log("Pushed item");
-                console.log(allCategory.num);
+                //console.log("Pushed item");
+                //console.log(allCategory.num);
             }
 
             categories.unshift(allCategory);
 
-            console.log("Final outcome is!!!");
-            console.log(categories);
+            //console.log("Final outcome is!!!");
+            //console.log(categories);
         });
 
         var category = {
@@ -112,12 +112,12 @@ function ItemDAO(database) {
          }
 
         this.db.collection('item').find(query).skip(page * itemsPerPage).limit(itemsPerPage).toArray(function(err, docs){
-            console.log("in toArray callback");
+            //console.log("in toArray callback");
             for (var i = 0; i < docs.length; i++) {
                 pageItems.push(docs[i]);
             }
-            console.log("Page items...");
-            console.log(pageItems.length);
+            //console.log("Page items...");
+            //console.log(pageItems.length);
             callback(pageItems);
         });
         
@@ -159,8 +159,23 @@ function ItemDAO(database) {
          * getNumItems() method.
          *
          */
+
+        if (category == "All") {
+           var query = {};
+        } else {
+            var query = {"category": category };
+        }
+
+        ///console.log("Hi everyone!");
+
+         this.db.collection('item').find(query).count(function(err, count){
+            console.log("this is the count");
+            console.log(count);
+            callback(count);
+
+         });
         
-        callback(numItems);
+        //callback(numItems);
     }
 
 
