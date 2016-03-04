@@ -42,14 +42,44 @@ function ItemDAO(database) {
         * should identify the total number of documents across all categories.
         *
         */
-
         var categories = [];
+        var results = [];
+        var collectionItem = database.collection('item');
+        collectionItem.aggregate([
+            { $match: { "category": {$ne: null } } },
+            { $group: {
+                _id: "$category",
+                num: { $sum: 1},
+            } },
+            { $project: {
+                "num": 1,
+                _id: 1,
+            } },
+            { $sort: { _id: 1 } },
+        ], function(err, results){
+
+            var allCategory = {
+                _id: "All",
+                num: 0
+            };
+
+            for (var i = 0; i < results.length; i++){
+                allCategory.num += results[i].num;
+                categories.push(results[i]);
+                console.log("Pushed item");
+                console.log(allCategory.num);
+            }
+
+            categories.unshift(allCategory);
+
+            console.log("Final outcome is!!!");
+            console.log(categories);
+        });
+
         var category = {
             _id: "All",
-            num: 9999
+            num: 0
         };
-
-        categories.push(category)
 
         // TODO-lab1A Replace all code above (in this method).
         
