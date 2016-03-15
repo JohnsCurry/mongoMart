@@ -79,6 +79,7 @@ MongoClient.connect('mongodb://localhost:27017/mongomart', function(err, db) {
                     if (itemCount > ITEMS_PER_PAGE) {
                         numPages = Math.ceil(itemCount / ITEMS_PER_PAGE);
                     }
+                    console.log(categories);
                 
                     res.render('home', { category_param: category,
                                          categories: categories,
@@ -127,7 +128,7 @@ MongoClient.connect('mongodb://localhost:27017/mongomart', function(err, db) {
         var itemId = parseInt(req.params.itemId);
 
         items.getItem(itemId, function(item) {
-            console.log(item);
+            console.log(itemId);
 
             if (item == null) {
                 res.status(404).send("Item not found.");
@@ -154,7 +155,7 @@ MongoClient.connect('mongodb://localhost:27017/mongomart', function(err, db) {
 
             items.getRelatedItems(function(relatedItems) {
 
-                console.log(relatedItems);
+               // console.log(relatedItems);
                 res.render("item",
                            {
                                userId: USERID,
